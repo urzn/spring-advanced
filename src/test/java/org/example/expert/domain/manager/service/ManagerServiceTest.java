@@ -38,15 +38,17 @@ class ManagerServiceTest {
     @InjectMocks
     private ManagerService managerService;
 
+    /// ManagerService 에서 Todo Id에 해당하는 Todo가 없다면
+    /// 'InvalidRequestException' 예외, 'Todo not found' 를 던지도록 설정되어있음.
     @Test
-    public void manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() {
+    public void manager_목록_조회_시_Todo가_없다면_InvalidRequestException_에러를_던진다() {
         // given
         long todoId = 1L;
         given(todoRepository.findById(todoId)).willReturn(Optional.empty());
 
         // when & then
         InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> managerService.getManagers(todoId));
-        assertEquals("Manager not found", exception.getMessage());
+        assertEquals("Todo not found", exception.getMessage());
     }
 
     @Test
